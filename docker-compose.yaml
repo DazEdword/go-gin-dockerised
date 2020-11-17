@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  goginapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: goginapp
+    ports:
+      - "8080:8080"
+    links:
+      - postgres
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DBNAME=gogin
+      - POSTGRES_USERNAME=user
+      - POSTGRES_PASSWORD=secretpass
+  postgres:
+    image: postgres
+    container_name: gogin-postgres
+    environment:
+      - POSTGRES_DBNAME=gogin
+      - POSTGRES_USERNAME=user
+      - POSTGRES_PASSWORD=secretpass
+    ports:
+      - 5432:5432
+    volumes:
+      - goginapp-postgres-data:/var/lib/postgresql/data
+volumes:
+  goginapp-postgres-data:
+    driver: local
