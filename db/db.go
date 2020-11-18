@@ -22,9 +22,28 @@ func BuildConnectionString() string {
 
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		os.Getenv("POSTGRES_HOST"), portValue,
-		os.Getenv("POSTGRES_USERNAME"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DBNAME"))
+		os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DB"))
 
 	return connectionString
+}
+
+/*BuildConnectionURL builds a Postgresql connection url.
+Extracts its different sections from environmental variables.
+Format: postgres://user:password@host:port/dbname?query */
+func BuildConnectionURL() string {
+
+	portValue, ok := os.LookupEnv("POSTGRES_PORT")
+	if !ok {
+		portValue = "5432"
+	}
+
+	connectionURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"),
+		os.Getenv("POSTGRES_HOST"), portValue,
+		os.Getenv("POSTGRES_DB"))
+
+	return connectionURL
 }
 
 /*InitDb starts and returns a connection pool*/

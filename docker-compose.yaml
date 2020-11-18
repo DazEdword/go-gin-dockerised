@@ -8,20 +8,20 @@ services:
     ports:
       - "8080:8080"
     links:
-      - postgres
+      - gogin-postgres
     depends_on:
-      - postgres
+      - gogin-postgres
     environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_DBNAME=gogin
-      - POSTGRES_USERNAME=user
+      - POSTGRES_HOST=gogin-postgres
+      - POSTGRES_DB=gogin
+      - POSTGRES_USER=gogin
       - POSTGRES_PASSWORD=secretpass
-  postgres:
+  gogin-postgres:
     image: postgres
     container_name: gogin-postgres
     environment:
-      - POSTGRES_DBNAME=gogin
-      - POSTGRES_USERNAME=user
+      - POSTGRES_DB=gogin
+      - POSTGRES_USER=gogin
       - POSTGRES_PASSWORD=secretpass
     ports:
       - 5432:5432

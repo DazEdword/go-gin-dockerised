@@ -6,4 +6,4 @@ down:
 
 .PHONY: db
 db:
-	docker-compose up --build -d postgres
+	docker-compose up --build -d gogin-postgres
