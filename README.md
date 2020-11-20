@@ -1,4 +1,4 @@
-# Gogin Dockerised
+# Gin + Postgres Dockerised
 A multi-container Gin app template with Postgres instance defined via docker-compose.
 
 ## Database setup

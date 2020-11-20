@@ -1,7 +1,7 @@
 package db
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"testing"
 )
@@ -30,7 +30,7 @@ func TestBuildConnectionString(t *testing.T) {
 
 	// Act
 	actual := BuildConnectionString()
-	fmt.Println(actual)
+	log.Println(actual)
 
 	// Assert
 	if actual != expected {

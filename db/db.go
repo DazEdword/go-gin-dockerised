@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -29,7 +30,7 @@ func BuildConnectionString() string {
 
 /*BuildConnectionURL builds a Postgresql connection url.
 Extracts its different sections from environmental variables.
-Format: postgres://user:password@host:port/dbname?query */
+Format: postgres://user:password@host:port/dbname */
 func BuildConnectionURL() string {
 
 	portValue, ok := os.LookupEnv("POSTGRES_PORT")
@@ -56,6 +57,7 @@ func InitDb(connectionString string) *pgxpool.Pool {
 	}
 
 	Db = pool
-	fmt.Println("Postgres pool created!")
+
+	log.Println("Postgres pool created!")
 	return Db
 }
