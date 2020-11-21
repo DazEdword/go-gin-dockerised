@@ -1,7 +1,6 @@
 package db
 
 import (
-	"log"
 	"os"
 	"testing"
 )
@@ -30,10 +29,24 @@ func TestBuildConnectionString(t *testing.T) {
 
 	// Act
 	actual := BuildConnectionString()
-	log.Println(actual)
 
 	// Assert
 	if actual != expected {
-		t.Error("hmmm")
+		t.Errorf("%s \n vs expected \n %s", actual, expected)
+	}
+}
+
+func TestBuildConnectionURL(t *testing.T) {
+	// Arrange
+	expected := "postgres://dave:notverysecure@localhost:1234/gogin"
+
+	setup(t)
+
+	// Act
+	actual := BuildConnectionURL()
+
+	// Assert
+	if actual != expected {
+		t.Errorf("%s \n vs expected \n %s", actual, expected)
 	}
 }
