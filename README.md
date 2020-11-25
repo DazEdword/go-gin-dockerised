@@ -10,6 +10,8 @@ make db         # Bring up the Postgres service online (e.g. to run or test the 
 make test       # Run tests
 ```
 
+Bring all services up with `make up` and then visit `http://localhost:8080/`.
+
 ## Database setup
 The user and database `gogin` will be created by the Postgres' init script automatically.
 
