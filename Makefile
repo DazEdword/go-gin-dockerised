@@ -10,4 +10,5 @@ db:
 
 .PHONY: test
 test:
-	docker-compose run --rm goginapp go test /go/src/app/... -cover
+	docker-compose run --rm --entrypoint="go test ./... -cover" goginapp
+
