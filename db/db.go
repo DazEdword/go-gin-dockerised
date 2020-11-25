@@ -6,11 +6,21 @@ import (
 	"log"
 	"os"
 
+	"github.com/jackc/pgconn"
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
+//Pooler abstracts connection pool methods
+type Pooler interface {
+	Begin(ctx context.Context) (pgx.Tx, error)
+	Exec(ctx context.Context, sql string, arguments ...interface{}) (pgconn.CommandTag, error)
+	Query(ctx context.Context, sql string, optionsAndArgs ...interface{}) (pgx.Rows, error)
+	QueryRow(ctx context.Context, sql string, optionsAndArgs ...interface{}) pgx.Row
+}
+
 //Db creates an exported global variable to hold the database connection pool.
-var Db *pgxpool.Pool
+var Db Pooler
 
 /*BuildConnectionString builds a Postgresql connection string.
 Extracts its different sections from environmental variables*/
@@ -48,7 +58,7 @@ func BuildConnectionURL() string {
 }
 
 /*InitDb starts and returns a connection pool*/
-func InitDb(connectionString string) *pgxpool.Pool {
+func InitDb(connectionString string) Pooler {
 	pool, err := pgxpool.Connect(context.Background(), connectionString)
 
 	if err != nil {

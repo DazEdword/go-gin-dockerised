@@ -13,6 +13,13 @@ import (
 )
 
 func main() {
+	r := CreateApp()
+
+	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+}
+
+// CreateApp is the application factory
+func CreateApp() *gin.Engine {
 	// Autoloading .env (only when undockerised)
 	if _, err := os.Stat("/.dockerenv"); err != nil {
 		err := godotenv.Load()
@@ -51,7 +58,7 @@ func main() {
 		})
 	})
 
-	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	return r
 }
 
 // GetUsers query the "users" table and retrieve a slice of JSON objects

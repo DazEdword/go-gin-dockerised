@@ -1,5 +1,7 @@
 FROM golang:alpine
 
+RUN apk add build-base
+
 # ENV GIN_MODE=release
 ENV PORT=8080
 
@@ -12,4 +14,4 @@ RUN go install -v ./...
 
 EXPOSE $PORT
 
-ENTRYPOINT [ "go", "run", "app.go" ]
+CMD [ "go", "run", "app.go" ]

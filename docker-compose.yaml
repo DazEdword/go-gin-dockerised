@@ -16,6 +16,8 @@ services:
       - POSTGRES_DB=gogin
       - POSTGRES_USER=gogin
       - POSTGRES_PASSWORD=secretpass
+    volumes:
+      - .:/go/src/app/
   gogin-postgres:
     image: postgres
     container_name: gogin-postgres
