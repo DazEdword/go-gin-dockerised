@@ -8,4 +8,4 @@ migrate -database ${POSTGRESQL_URL} -path db/migrations up
 
 # Start app
 echo "Starting app..."
-go run app.go
+go run ./cmd/goginapp/app.go
