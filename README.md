@@ -1,5 +1,10 @@
 # Gin + Postgres Dockerised
-A multi-container Gin app template with Postgres instance defined via docker-compose.
+A multi-container Gin app template with Postgres instance defined via docker compose.
+
+# Requirements
+- Go             >= 1.23
+- Docker         >= 27.1.2
+- Docker Compose >= 2.29.1
 
 ## Basic commands
 See Makefile:
