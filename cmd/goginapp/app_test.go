@@ -5,13 +5,40 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
+
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
+func MigrationFixture(t *testing.T) {
+	pgUser := os.Getenv("POSTGRES_USER")
+	pgPass := os.Getenv("POSTGRES_PASSWORD")
+	pgHost := os.Getenv("POSTGRES_HOST")
+	pgPort := os.Getenv("POSTGRES_PORT")
+	pgDb := os.Getenv("POSTGRES_DB")
+
+	connString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", pgUser, pgPass, pgHost, pgPort, pgDb)
+
+	m, err := migrate.New(
+		"file://../../db/migrations",
+		connString)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if err := m.Up(); err != nil {
+		if err != migrate.ErrNoChange {
+			t.Fatal(err)
+		}
+	}
+
+}
+
 func TestPingRoute(t *testing.T) {
-	// The setupServer method, that we previously refactored
-	// is injected into a test server
-	ts := httptest.NewServer(CreateApp())
+	ts := httptest.NewServer(CreateApp("../.."))
 	// Shut down the server and block until all requests have gone through
 	defer ts.Close()
 
@@ -40,9 +67,9 @@ func TestPingRoute(t *testing.T) {
 }
 
 func TestUsersRoute(t *testing.T) {
-	// The setupServer method, that we previously refactored
-	// is injected into a test server
-	ts := httptest.NewServer(CreateApp())
+	MigrationFixture(t)
+
+	ts := httptest.NewServer(CreateApp("../.."))
 	// Shut down the server and block until all requests have gone through
 	defer ts.Close()
 

@@ -1,3 +1,6 @@
+include .env
+export
+
 up:
 	docker compose up --build -d
 
@@ -11,4 +14,3 @@ db:
 .PHONY: test
 test:
 	docker compose run --rm --entrypoint="go test ./... -cover" goginapp
-

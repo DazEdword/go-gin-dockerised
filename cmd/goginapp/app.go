@@ -5,38 +5,33 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/DazEdword/go-gin-dockerised/db"
-	"github.com/joho/godotenv"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	r := CreateApp()
+	pwd, _ := os.Getwd()
+
+	r := CreateApp(pwd)
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
 // CreateApp is the application factory
-func CreateApp() *gin.Engine {
-	// Autoloading .env (only when undockerised)
-	if _, err := os.Stat("/.dockerenv"); err != nil {
-		err := godotenv.Load()
-		if err != nil {
-			log.Fatal("Error loading .env file")
-		}
-		log.Println("Loaded env vars from .env.")
-	}
-
+func CreateApp(rootPath string) *gin.Engine {
 	// Start Db
 	var connectionString = db.BuildConnectionString()
 	db.InitDb(connectionString)
 
 	r := gin.Default()
 
+	templatesPath := filepath.Join(rootPath, "templates")
+
 	// Loading templates
-	r.LoadHTMLGlob("templates/*")
+	r.LoadHTMLGlob(templatesPath + "/*")
 
 	// Main index
 	r.GET("/", func(c *gin.Context) {
